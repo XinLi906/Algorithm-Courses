@@ -1,16 +1,29 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-#define ZERO 48
+int find_max(int a, int b, int c);
 
 int main(int argc, char *argv[])
 {
-    int a = *argv[1], b = *argv[2], c = *argv[3];
-    printf("a is %d, b is %d, c is %d.\n", a, b, c);
-    int e = (a * (a / b) + b * (b / a)) - ZERO;
-    int f = (b * (b / c) + c * (c / b)) - ZERO;
-    printf("e is %d, f  is %d\n", e, f);
-    int max = (e * (e / f) + f * (f / e));
-    printf("max is %d.\n", max);
+    if (argc != 4) {
+        printf("Not enough arguments!");
+        exit(1);
+    }
+
+    int a = atoi(argv[1]), b = atoi(argv[2])
+        , c = atoi(argv[3]);
+
+    printf("The maximum element among %d, %d and %d is %d.\n",
+            a, b, c, find_max(a, b, c));
 
     return 0;
 }
+
+int find_max(int a, int b, int c)
+{
+    int t = a;
+    (t < b) && (t = b);
+    (t < c) && (t = c);
+    return t;
+}
+
