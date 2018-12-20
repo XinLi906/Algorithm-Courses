@@ -11,12 +11,12 @@ public class Percolation {
 
     private final int head;
     private final int tail;
+    private final int n;
+    private final WeightedQuickUnionUF wquuf;
+    private final WeightedQuickUnionUF wquufWithoutBottom;
 
-    private int n;
     private int numOfOpenedSites;
-    private boolean opened[];
-    private WeightedQuickUnionUF wquuf;
-    private WeightedQuickUnionUF wquufWithoutBottom;
+    private boolean[] opened;
 
     public Percolation(int n) {
         if (n <= 0) {
@@ -109,9 +109,5 @@ public class Percolation {
 
     public boolean percolates() {
         return this.wquuf.connected(this.head, this.tail);
-    }
-
-    public static void main(String[] args) {
-
     }
 }
