@@ -14,7 +14,7 @@
 
 typedef struct IteratorIntRep *IteratorInt;
 
-IteratorInt IteratorIntNew(); 
+IteratorInt IteratorIntNew();
 int add(IteratorInt it, int v);
 int hasNext(IteratorInt it);
 int hasPrevious(IteratorInt it);
