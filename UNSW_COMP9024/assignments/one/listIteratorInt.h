@@ -10,8 +10,6 @@
 #ifndef LISTITERINT_H
 #define LISTITERINT_H
 
-#include <stdio.h>
-
 typedef struct IteratorIntRep *IteratorInt;
 
 IteratorInt IteratorIntNew();
