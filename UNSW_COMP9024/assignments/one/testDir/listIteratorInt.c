@@ -140,29 +140,12 @@ int set(IteratorInt it, int v) {
 }
 
 int *findNext(IteratorInt it, int v) {
-    NodeT *curr = it->curr;
-    while(hasNext(it)) {
-        int *val = next(it);
-        if (*val == v) {
-            return val;
-        }
-    }
-    it->curr = curr;
-    it->state = NORM;
-    return NULL;
+    return &(it->curr->val);
 }
 
 int *findPrevious(IteratorInt it, int v) {
-    NodeT *curr = it->curr;
-    while(hasPrevious(it)) {
-        int *val = previous(it);
-        if (*val == v) {
-            return val;
-        }
-    }
-    it->curr = curr;
-    it->state = NORM;
-    return NULL;
+    return &(it->curr->val);
+
 }
 
 void reset(IteratorInt it) {
