@@ -1,3 +1,6 @@
+import edu.princeton.cs.algs4.StdRandom;
+
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
@@ -15,7 +18,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     public boolean isEmpty() {
-        return (boolean) size;
+        return size == 0;
     }
 
     public int size() {
@@ -23,14 +26,18 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private void resize() {
-        capcity *= 2;
+        if (size < capcity) {
+            capcity /= 2;
+        } else {
+            capcity *= 2;
+        }
         Item[] temp = (Item[]) new Object[capcity];
         for (int i = 0; i < size; i++) {
-            temp[i] = rq[(first + i) % q.length];
+            temp[i] = rq[(head + i) % capcity];
         }
         rq = temp;
         head = 0;
-        last = size;
+        tail = size;
     }
 
     private void validate(Item item) {
@@ -45,28 +52,76 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
     }
 
+    private int swap(int choice) {
+        Item temp = rq[choice];
+        int target = tail - 1;
+        if (tail < 0) {
+            target = capcity - 1;
+        }
+        rq[choice] = rq[target];
+        rq[target] = temp;
+        return target;
+    }
+
     public void enqueue(Item item) {
-        if (size == rq.length) {
+        if (size == capcity) {
             resize();
         }
         validate(item);
-        rq[last++] = item;
-        if (last == capcity) {
-            last = 0;
+        rq[tail++] = item;
+        if (tail == capcity) {
+            tail = 0;
         }
         size++;
     }
 
     public Item dequeue() {
         checkRemains();
-        Item randomItem = 
+        if (size <= (capcity / 4)) {
+            resize();
+        }
+        int choice = (head + StdRandom.uniform(size)) % capcity;
+        tail = swap(choice);
+        size--;
+        return rq[tail];
     }
 
     public Item sample() {
-
+        int choice = (head + StdRandom.uniform(size)) % capcity;
+        return rq[choice];
     }
 
-    public Iterator<Item> Iterator() {
+    @Override
+    public Iterator<Item> iterator() {
+        return new RQIterator();
+    }
 
+    private class RQIterator implements Iterator<Item> {
+        private Item[] iterQueue;
+        private int start;
+
+        private RQIterator() {
+            iterQueue = (Item[]) new Object[size];
+            for (int i = 0; i < size; i++) {
+                iterQueue[i] = rq[(head + i) % capcity];
+            }
+            StdRandom.shuffle(iterQueue);
+            start = 0;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return start == size;
+        }
+
+        @Override
+        public Item next() {
+            return iterQueue[start++];
+        }
     }
 }

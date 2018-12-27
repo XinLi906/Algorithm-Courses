@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
@@ -18,8 +19,8 @@ public class Deque<Item> implements Iterable<Item> {
         size = 0;
     }
 
-    public boolen isEmpty() {
-        return (boolean) size;
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     public int size() {
@@ -71,7 +72,7 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeFirst() {
         checkRemains();
         size--;
-        temp = head.item;
+        Item temp = head.item;
         if (head == tail) {
             head = tail = null;
         } else {
@@ -84,7 +85,7 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast() {
         checkRemains();
         size--;
-        temp = tail.item;
+        Item temp = tail.item;
         if (tail == head) {
             head = tail = null;
         } else {
@@ -94,11 +95,12 @@ public class Deque<Item> implements Iterable<Item> {
         return temp;
     }
 
-    public Iterator<Item> Iterator() {
+    @Override
+    public Iterator<Item> iterator() {
         return new queueIterator<Item>(head);
     }
 
-    private class queueIterator<Item> implements Iterable<Item> {
+    private class queueIterator<Item> implements Iterator<Item> {
         private Node<Item> current;
 
         public queueIterator(Node<Item> head) {
@@ -124,7 +126,13 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public static void main(String[] args) {
-        
+        Deque<Integer> deque = new Deque<Integer>();
+        for (int i = 0; i < 70; i++) {
+            deque.addLast(i);
+        }
+        for (int i : deque) {
+            System.out.printf("%d, ", i);
+        }
     }
 
 }
