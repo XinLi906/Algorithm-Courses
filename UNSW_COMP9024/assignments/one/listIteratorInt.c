@@ -62,10 +62,15 @@ int add(IteratorInt it, int v) {
 }
 
 int hasNext(IteratorInt it) {
+    it->state = NORM;
+    if (!it->curr) {
+        return it->head != NULL;
+    }
     return it->curr->next != NULL;
 }
 
 int hasPrevious(IteratorInt it) {
+    it->state = NORM;
     return it->curr != NULL;
 }
 
@@ -103,6 +108,14 @@ int deleteElm(IteratorInt it) {
         if (!it->curr->next) {
             temp = it->curr;
             it->curr = it->curr->prev;
+            it->curr->next = NULL;
+        } else if (!it->curr->prev) {
+            temp = it->head;
+            it->head = it->head->next;
+            if (it->head) {
+                it->head->prev = NULL;
+            }
+            it->curr = NULL;
         } else {
             temp = it->curr;
             it->curr = it->curr->prev;
@@ -113,6 +126,9 @@ int deleteElm(IteratorInt it) {
         if (!it->curr) {
             temp = it->head;
             it->head = it->head->next;
+            if (it->head) {
+                it->head->prev = NULL;
+            }
         } else {
             temp = it->curr->next;
             it->curr->next = temp->next;
